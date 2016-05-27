@@ -12,7 +12,7 @@ RUN yum groupinstall -y  'Development Tools' && yum install -y java jenkins deja
 
 # PHP Related
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer global require phpmetrics/phpmetrics
+#RUN composer global require phpmetrics/phpmetrics
 RUN composer global require squizlabs/php_codesniffer
 RUN composer global require phpunit/phpunit:4.8.25
 RUN composer global require sebastian/phpcpd:2.0.0
