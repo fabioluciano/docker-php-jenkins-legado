@@ -7,10 +7,12 @@ ENV COMPOSER_HOME /usr/share/composer/
 ADD http://pkg.jenkins-ci.org/redhat/jenkins.repo /etc/yum.repos.d/jenkins.repo
 RUN rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
 
-RUN yum update -y && yum install -y java jenkins dejavu-fonts-common ant wget initscripts openssl-devel && yum groupinstall 'Development Tools' -y \
-  yum install -y php php-pear php-cli php-bcmath php-dba php-gd php-intl \
-  php-imap php-ldap php-mbstring php-mysql php-devel php-ldap php-mysql php-odbc php-pgsql php-xml php-xmlrpc \
-  php-mcrypt php-mssql php-posix php-soap php-tidy php-pecl-imagick php-pear-phing  php-dom php-pecl-xdebug
+RUN yum update -y && \
+  yum install -y java jenkins dejavu-fonts-common ant wget initscripts openssl openssl-devel && \
+  yum groupinstall -y 'Development Tools' && \
+  yum install -y php php-pear php-common php-opcache php-mbstring php-opcache php-mcrypt php-intl php-devel php-gd php-ldap php-mysql php-pdo php-pgsql php-xml && \ 
+  yum clean all
+
 
 COPY packages/oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm /tmp/
 COPY packages/oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm /tmp/
@@ -26,6 +28,7 @@ RUN printf "\n" | pecl install mongo
 RUN echo "extension=mongo.so" > /etc/php.d/mongo.ini
 
 RUN sed -i "s/^;date.timezone =$/date.timezone = \"America\/Sao_Paulo\"/" /etc/php.ini
+RUN sed -i "s/^memory_limit =$/memory_limit = 1024M/" /etc/php.ini
 
 COPY config/plugins.sh config/plugins.txt /tmp/
 RUN chmod +x /tmp/plugins.sh
@@ -35,15 +38,15 @@ RUN chown jenkins:jenkins -R /var/lib/jenkins/plugins
 # PHP Related
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN composer global require phpmetrics/phpmetrics
+#RUN composer global require phpmetrics/phpmetrics:1.5.1
 RUN composer global require squizlabs/php_codesniffer
 RUN composer global require phpunit/phpunit:4.8.25
 RUN composer global require sebastian/phpcpd:2.0.0
-RUN composer global require sebastian/phpdcd:1.0.4
-RUN composer global require pdepend/pdepend:1.1.1
+RUN composer global require sebastian/phpdcd
+RUN composer global require pdepend/pdepend
 RUN composer global require phploc/phploc:2.1.5
 RUN composer global require theseer/phpdox:0.8.0
-RUN composer global require phpmd/phpmd:2.0.0
+RUN composer global require phpmd/phpmd
 
 RUN chmod a+rwx -R /usr/share/composer/cache
 RUN ln -s /usr/share/composer/vendor/bin/* /usr/local/bin/

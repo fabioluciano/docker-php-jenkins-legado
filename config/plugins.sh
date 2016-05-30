@@ -1,4 +1,4 @@
-directory=$(dirname $(realpath $0))
+directory=$(dirname $(readlink --canonicalize $0))
 update='https://updates.jenkins-ci.org/latest/'
 plugin_list=$(cat $directory'/plugins.txt')
 plugins_location=/var/lib/jenkins/plugins
