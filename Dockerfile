@@ -16,7 +16,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN composer global require squizlabs/php_codesniffer
 RUN composer global require phpunit/phpunit:4.8.25
 RUN composer global require sebastian/phpcpd:2.0.0
-RUN composer global require sebastian/phpdcd:2.0.0
+RUN composer global require sebastian/phpdcd:1.0.4
 RUN composer global require pdepend/pdepend:1.1.1
 RUN composer global require phploc/phploc:2.1.5
 RUN composer global require theseer/phpdox:0.8.0
