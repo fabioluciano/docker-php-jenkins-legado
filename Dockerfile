@@ -1,6 +1,6 @@
 FROM centos:6.7
 
-MAINTAINER Fábio Luciano <fabio.goisl@ctis.com.br>
+MAINTAINER Fábio Luciano <fabioluciano@php.net>
 
 ENV COMPOSER_HOME /usr/share/composer/
 
